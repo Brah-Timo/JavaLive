@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.javalive</groupId>
+        <artifactId>javalive-parent</artifactId>
+        <version>0.1.0-alpha</version>
+    </parent>
+
+    <artifactId>javalive-processor</artifactId>
+    <name>JavaLive :: Annotation Processor</name>
+    <description>
+        Compile-time annotation processor for JavaLive.
+        Reads @VueComponent classes and generates:
+        - Spring WebSocket Controllers (Java source files)
+        - Vue 3 Component definitions (JavaScript files in static resources)
+        - State Schema JSON files for the client runtime
+        - Vue Router entry definitions
+        Runs during the javac compilation phase via APT (Annotation Processing Tool).
+    </description>
+
+    <dependencies>
+        <!-- Own annotations module -->
+        <dependency>
+            <groupId>io.javalive</groupId>
+            <artifactId>javalive-annotations</artifactId>
+        </dependency>
+
+        <!-- Google AutoService: auto-registers the Processor in META-INF/services -->
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- JavaPoet: fluent API for generating Java source code -->
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
+        </dependency>
+
+        <!-- Jackson: for generating JSON schemas -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Compile Testing library for testing annotation processors -->
+        <dependency>
+            <groupId>com.google.testing.compile</groupId>
+            <artifactId>compile-testing</artifactId>
+            <version>0.21.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <!-- AutoService processes itself -->
+                        <path>
+                            <groupId>com.google.auto.service</groupId>
+                            <artifactId>auto-service</artifactId>
+                            <version>1.1.1</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
