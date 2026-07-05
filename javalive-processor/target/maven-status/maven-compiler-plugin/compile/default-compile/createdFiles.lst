@@ -1,0 +1,15 @@
+io/javalive/processor/generator/VueComponentGenerator.class
+io/javalive/processor/validator/AnnotationValidator.class
+io/javalive/processor/model/FieldModel.class
+io/javalive/processor/JavaLiveProcessor.class
+io/javalive/processor/generator/StateSchemaGenerator.class
+io/javalive/processor/generator/SpringControllerGenerator.class
+io/javalive/processor/model/ComponentModel.class
+io/javalive/processor/generator/RouterGenerator.class
+io/javalive/processor/parser/ClassParser.class
+io/javalive/processor/parser/TypeMapper.class
+META-INF/services/javax.annotation.processing.Processor
+io/javalive/processor/model/TemplateModel.class
+io/javalive/processor/model/MethodModel.class
+io/javalive/processor/parser/FieldParser.class
+io/javalive/processor/parser/TemplateParser.class

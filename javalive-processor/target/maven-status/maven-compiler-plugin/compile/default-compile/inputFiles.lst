@@ -1,0 +1,14 @@
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/JavaLiveProcessor.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/generator/RouterGenerator.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/generator/SpringControllerGenerator.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/generator/StateSchemaGenerator.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/generator/VueComponentGenerator.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/model/ComponentModel.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/model/FieldModel.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/model/MethodModel.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/model/TemplateModel.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/parser/ClassParser.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/parser/FieldParser.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/parser/TemplateParser.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/parser/TypeMapper.java
+/home/user/webapp/javalive/javalive-processor/src/main/java/io/javalive/processor/validator/AnnotationValidator.java
