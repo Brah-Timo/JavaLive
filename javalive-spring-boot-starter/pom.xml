@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.javalive</groupId>
+        <artifactId>javalive-parent</artifactId>
+        <version>0.1.0-alpha</version>
+    </parent>
+
+    <artifactId>javalive-spring-boot-starter</artifactId>
+    <name>JavaLive :: Spring Boot Starter</name>
+    <description>
+        Spring Boot Starter for JavaLive.
+        Add this single dependency to your pom.xml to get the complete JavaLive setup:
+        - javalive-annotations (for writing @VueComponent classes)
+        - javalive-core (runtime: WebSocket, StateManager, Dispatcher, SSR)
+        - Spring Boot WebSocket autoconfigured
+        - All Spring beans registered automatically
+    </description>
+
+    <dependencies>
+        <!-- Pulls in annotations (for writing @VueComponent, @Reactive, etc.) -->
+        <dependency>
+            <groupId>io.javalive</groupId>
+            <artifactId>javalive-annotations</artifactId>
+        </dependency>
+
+        <!-- Pulls in the full server runtime -->
+        <dependency>
+            <groupId>io.javalive</groupId>
+            <artifactId>javalive-core</artifactId>
+        </dependency>
+    </dependencies>
+</project>
