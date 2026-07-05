@@ -1,0 +1,159 @@
+{
+  "_generated": true,
+  "_generator": "JavaLive Annotation Processor",
+  "name": "user-management",
+  "javaClass": "com.example.pages.UserManagement",
+  "route": {
+    "path": "/users",
+    "name": "UserManagement",
+    "requiresAuth": false,
+    "layout": "default"
+  },
+  "fields": [
+    {
+      "name": "users",
+      "javaType": "java.util.List<com.example.model.User>",
+      "vueType": "Array",
+      "defaultValue": [],
+      "scope": "session",
+      "persist": false,
+      "label": "users"
+    },
+    {
+      "name": "searchQuery",
+      "javaType": "java.lang.String",
+      "vueType": "String",
+      "defaultValue": "",
+      "scope": "session",
+      "persist": false,
+      "label": "searchQuery"
+    },
+    {
+      "name": "isLoading",
+      "javaType": "boolean",
+      "vueType": "Boolean",
+      "defaultValue": false,
+      "scope": "session",
+      "persist": false,
+      "label": "isLoading"
+    },
+    {
+      "name": "errorMessage",
+      "javaType": "java.lang.String",
+      "vueType": "String",
+      "defaultValue": "",
+      "scope": "session",
+      "persist": false,
+      "label": "errorMessage"
+    },
+    {
+      "name": "successMessage",
+      "javaType": "java.lang.String",
+      "vueType": "String",
+      "defaultValue": "",
+      "scope": "session",
+      "persist": false,
+      "label": "successMessage"
+    },
+    {
+      "name": "currentPage",
+      "javaType": "int",
+      "vueType": "Number",
+      "defaultValue": 0,
+      "scope": "session",
+      "persist": false,
+      "label": "currentPage"
+    },
+    {
+      "name": "totalPages",
+      "javaType": "int",
+      "vueType": "Number",
+      "defaultValue": 0,
+      "scope": "session",
+      "persist": false,
+      "label": "totalPages"
+    },
+    {
+      "name": "showCreateModal",
+      "javaType": "boolean",
+      "vueType": "Boolean",
+      "defaultValue": false,
+      "scope": "session",
+      "persist": false,
+      "label": "showCreateModal"
+    },
+    {
+      "name": "newUserName",
+      "javaType": "java.lang.String",
+      "vueType": "String",
+      "defaultValue": "",
+      "scope": "session",
+      "persist": false,
+      "label": "newUserName"
+    },
+    {
+      "name": "newUserEmail",
+      "javaType": "java.lang.String",
+      "vueType": "String",
+      "defaultValue": "",
+      "scope": "session",
+      "persist": false,
+      "label": "newUserEmail"
+    }
+  ],
+  "props": [
+  ],
+  "methods": [
+    {
+      "name": "search",
+      "javaName": "search",
+      "loading": true,
+      "debounce": 0,
+      "params": []
+    },
+    {
+      "name": "goToPage",
+      "javaName": "goToPage",
+      "loading": false,
+      "debounce": 0,
+      "params": ["page"]
+    },
+    {
+      "name": "openCreateModal",
+      "javaName": "openCreateModal",
+      "loading": false,
+      "debounce": 0,
+      "params": []
+    },
+    {
+      "name": "closeCreateModal",
+      "javaName": "closeCreateModal",
+      "loading": false,
+      "debounce": 0,
+      "params": []
+    },
+    {
+      "name": "createUser",
+      "javaName": "createUser",
+      "loading": true,
+      "debounce": 0,
+      "params": []
+    },
+    {
+      "name": "deleteUser",
+      "javaName": "deleteUser",
+      "loading": false,
+      "debounce": 0,
+      "params": ["userId"]
+    },
+    {
+      "name": "clearSearch",
+      "javaName": "clearSearch",
+      "loading": false,
+      "debounce": 0,
+      "params": []
+    }
+  ],
+  "computed": ["usersCount", "hasUsers"],
+  "lifecycleHooks": ["onMounted"]
+}

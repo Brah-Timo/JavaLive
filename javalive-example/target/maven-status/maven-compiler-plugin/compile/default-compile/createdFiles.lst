@@ -1,0 +1,17 @@
+static/javalive/components/user-management.js
+com/example/components/CounterWidget.class
+com/example/pages/generated/DashboardLiveController.class
+static/javalive/schemas/user-management.schema.json
+com/example/ExampleApplication.class
+com/example/pages/UserManagement.class
+com/example/components/generated/CounterWidgetLiveController.class
+com/example/pages/Dashboard.class
+static/javalive/components/counter-widget.js
+static/javalive/schemas/counter-widget.schema.json
+com/example/service/UserService.class
+static/javalive/components/dashboard.js
+com/example/model/User.class
+static/javalive/router.js
+com/example/config/SecurityConfig.class
+com/example/pages/generated/UserManagementLiveController.class
+static/javalive/schemas/dashboard.schema.json

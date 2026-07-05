@@ -1,0 +1,54 @@
+{
+  "_generated": true,
+  "_generator": "JavaLive Annotation Processor",
+  "name": "dashboard",
+  "javaClass": "com.example.pages.Dashboard",
+  "route": {
+    "path": "/dashboard",
+    "name": "Dashboard",
+    "requiresAuth": false,
+    "layout": "default"
+  },
+  "fields": [
+    {
+      "name": "visitCount",
+      "javaType": "int",
+      "vueType": "Number",
+      "defaultValue": 0,
+      "scope": "session",
+      "persist": false,
+      "label": "visitCount"
+    },
+    {
+      "name": "welcomeMessage",
+      "javaType": "java.lang.String",
+      "vueType": "String",
+      "defaultValue": "",
+      "scope": "session",
+      "persist": false,
+      "label": "welcomeMessage"
+    },
+    {
+      "name": "darkMode",
+      "javaType": "boolean",
+      "vueType": "Boolean",
+      "defaultValue": false,
+      "scope": "session",
+      "persist": false,
+      "label": "darkMode"
+    }
+  ],
+  "props": [
+  ],
+  "methods": [
+    {
+      "name": "toggleDarkMode",
+      "javaName": "toggleDarkMode",
+      "loading": false,
+      "debounce": 0,
+      "params": []
+    }
+  ],
+  "computed": ["themeLabel"],
+  "lifecycleHooks": ["onMounted"]
+}

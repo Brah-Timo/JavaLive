@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaLive — Write Java, Ship Vue</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+        }
+        .logo {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6ee7b7, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        .tagline {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+        .sub-tagline {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 3rem;
+            max-width: 600px;
+        }
+        .badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        .badge {
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .badge-green  { background: #064e3b; color: #6ee7b7; border: 1px solid #10b981; }
+        .badge-blue   { background: #1e3a5f; color: #93c5fd; border: 1px solid #3b82f6; }
+        .badge-purple { background: #3b0764; color: #d8b4fe; border: 1px solid #9333ea; }
+        .nav-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 3rem;
+        }
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            display: block;
+        }
+        .card:hover {
+            border-color: #6ee7b7;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(110, 231, 183, 0.1);
+        }
+        .card-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .card-title { font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem; color: #f1f5f9; }
+        .card-desc  { font-size: 0.875rem; color: #94a3b8; line-height: 1.5; }
+        .code-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: left;
+            max-width: 700px;
+            width: 100%;
+            margin-bottom: 2rem;
+            font-family: 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.875rem;
+            line-height: 1.7;
+        }
+        .code-block .comment { color: #8b949e; }
+        .code-block .annotation { color: #d2a8ff; }
+        .code-block .keyword { color: #ff7b72; }
+        .code-block .type { color: #79c0ff; }
+        .code-block .string { color: #a5d6ff; }
+        .code-block .method { color: #d2a8ff; }
+        .status-bar {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        .status-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        footer {
+            padding: 2rem;
+            text-align: center;
+            color: #475569;
+            font-size: 0.875rem;
+            border-top: 1px solid #1e293b;
+        }
+    </style>
+</head>
+<body>
+<div class="hero">
+    <div class="logo">☕ JavaLive</div>
+    <p class="tagline">Write Java. Ship Vue. No REST. No DTOs.</p>
+    <p class="sub-tagline">
+        Annotate your Java classes → JavaLive generates Spring WebSocket controllers
+        + Vue 3 components at compile time. Real-time reactive UI without the boilerplate.
+    </p>
+
+    <div class="badges">
+        <span class="badge badge-green">✅ Spring Boot 3.x</span>
+        <span class="badge badge-blue">💚 Vue 3</span>
+        <span class="badge badge-green">⚡ WebSocket / STOMP</span>
+        <span class="badge badge-purple">🔮 APT Compile-Time</span>
+        <span class="badge badge-blue">☕ Java 21</span>
+    </div>
+
+    <div class="code-block">
+        <span class="comment">// This is ALL you write. JavaLive generates the rest.</span><br>
+        <span class="annotation">@Controller</span><br>
+        <span class="annotation">@VueComponent</span><span class="string">("counter-widget")</span><br>
+        <span class="keyword">public class</span> <span class="type">CounterWidget</span> {<br>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="annotation">@Reactive</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">public int</span> count = <span class="string">0</span>;<br>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="annotation">@VueMethod</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">public void</span> <span class="method">increment</span>() {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.count++;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+        }
+    </div>
+
+    <div class="nav-cards">
+        <a href="/dashboard" class="card">
+            <div class="card-icon">📊</div>
+            <div class="card-title">Dashboard</div>
+            <div class="card-desc">@VuePage + @VueLifecycle + @VueComputed. Dark mode toggle, visit counter.</div>
+        </a>
+        <a href="/users" class="card">
+            <div class="card-icon">👥</div>
+            <div class="card-title">User Management</div>
+            <div class="card-desc">Full CRUD, live search with @VueWatch debounce, pagination.</div>
+        </a>
+        <a href="/javalive/status" class="card">
+            <div class="card-icon">🔌</div>
+            <div class="card-title">JavaLive Status</div>
+            <div class="card-desc">API endpoint showing all registered routes and runtime status.</div>
+        </a>
+        <a href="/h2-console" class="card">
+            <div class="card-icon">🗄️</div>
+            <div class="card-title">H2 Console</div>
+            <div class="card-desc">Browse the in-memory database. JDBC URL: jdbc:h2:mem:javalive</div>
+        </a>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-dot"></div>
+        <span>JavaLive Example App is running on Spring Boot 3 · Java 21 · Port 8080</span>
+    </div>
+</div>
+
+<footer>
+    JavaLive v0.1.0-alpha — The Annotation-Driven Reactive Full-Stack Java Framework
+</footer>
+</body>
+</html>

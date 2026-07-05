@@ -1,0 +1,61 @@
+{
+  "_generated": true,
+  "_generator": "JavaLive Annotation Processor",
+  "name": "counter-widget",
+  "javaClass": "com.example.components.CounterWidget",
+  "route": null,
+  "fields": [
+    {
+      "name": "count",
+      "javaType": "int",
+      "vueType": "Number",
+      "defaultValue": 0,
+      "scope": "session",
+      "persist": false,
+      "label": "count"
+    },
+    {
+      "name": "step",
+      "javaType": "int",
+      "vueType": "Number",
+      "defaultValue": 0,
+      "scope": "session",
+      "persist": false,
+      "label": "step"
+    }
+  ],
+  "props": [
+  ],
+  "methods": [
+    {
+      "name": "increment",
+      "javaName": "increment",
+      "loading": false,
+      "debounce": 0,
+      "params": []
+    },
+    {
+      "name": "decrement",
+      "javaName": "decrement",
+      "loading": false,
+      "debounce": 0,
+      "params": []
+    },
+    {
+      "name": "reset",
+      "javaName": "reset",
+      "loading": false,
+      "debounce": 0,
+      "params": []
+    },
+    {
+      "name": "setStep",
+      "javaName": "setStep",
+      "loading": false,
+      "debounce": 0,
+      "params": ["newStep"]
+    }
+  ],
+  "computed": ["zero", "negative"],
+  "lifecycleHooks": []
+}

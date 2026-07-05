@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaLive Example App</title>
+
+  <!-- ── Tailwind CSS (CDN, play version — production should use compiled) ─────── -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 400: '#6ee7b7', 500: '#10b981', 600: '#059669' },
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- ── SockJS (required for Spring STOMP withSockJS()) ───────────────────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+  <!-- ── @stomp/stompjs (exposes globalThis.StompJs) ───────────────────────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+
+  <!--
+    Vue 3 + Vue Router are loaded as ES modules via importmap.
+    This lets our generated components do:
+        import { defineComponent, ... } from 'vue';
+        import { createRouter, ... }    from 'vue-router';
+  -->
+  <script type="importmap">
+  {
+    "imports": {
+      "vue":        "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.prod.js",
+      "vue-router": "https://cdn.jsdelivr.net/npm/vue-router@4/dist/vue-router.esm-browser.js"
+    }
+  }
+  </script>
+
+  <style>
+    /* ── Base reset ──────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    /* ── Top nav ──────────────────────────────────────────────────────────────── */
+    .jl-nav {
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .jl-nav-brand {
+      font-size: 1.25rem; font-weight: 800;
+      background: linear-gradient(135deg, #6ee7b7, #3b82f6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+    .jl-nav-links { display: flex; gap: 0.5rem; align-items: center; }
+    .jl-nav-link {
+      color: #94a3b8; text-decoration: none; padding: 0.4rem 0.75rem;
+      border-radius: 6px; font-size: 0.875rem; font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+    .jl-nav-link:hover, .jl-nav-link.router-link-active {
+      background: #334155; color: #f1f5f9;
+    }
+    .jl-status-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #ef4444;
+      transition: background 0.3s;
+    }
+    .jl-status-dot.connected { background: #10b981; animation: pulse-dot 2s infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1}50%{opacity:0.4} }
+
+    /* ── Page layout ──────────────────────────────────────────────────────────── */
+    #app-view { padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
+
+    /* ── Connecting overlay ───────────────────────────────────────────────────── */
+    .jl-connecting {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 60vh; gap: 1rem; color: #94a3b8;
+    }
+    .jl-spinner {
+      width: 40px; height: 40px; border: 3px solid #334155;
+      border-top-color: #6ee7b7; border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Component helpers ────────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.375rem; padding: 0.5rem 1rem; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer;
+      border: 1px solid transparent; transition: all 0.15s;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary  { background: #10b981; color: #fff; }
+    .btn-primary:hover:not(:disabled)  { background: #059669; }
+    .btn-outline  { background: transparent; border-color: #475569; color: #94a3b8; }
+    .btn-outline:hover:not(:disabled)  { border-color: #6ee7b7; color: #6ee7b7; }
+    .btn-ghost    { background: transparent; color: #94a3b8; }
+    .btn-ghost:hover:not(:disabled)    { background: #1e293b; color: #f1f5f9; }
+    .btn-error    { background: #ef4444; color: #fff; }
+    .btn-error:hover:not(:disabled)    { background: #dc2626; }
+    .btn-success  { background: #10b981; color: #fff; }
+    .btn-success:hover:not(:disabled)  { background: #059669; }
+    .btn-sm       { padding: 0.25rem 0.625rem; font-size: 0.8125rem; }
+    .btn-xs       { padding: 0.2rem 0.5rem; font-size: 0.75rem; border-radius: 4px; }
+
+    .input {
+      background: #1e293b; border: 1px solid #334155; color: #f1f5f9;
+      padding: 0.5rem 0.75rem; border-radius: 8px; font-size: 0.875rem;
+      outline: none; transition: border-color 0.15s;
+    }
+    .input:focus { border-color: #6ee7b7; }
+    .input-sm { padding: 0.3rem 0.6rem; font-size: 0.8125rem; }
+    .input-bordered { border-color: #475569; }
+
+    .table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    .table th {
+      text-align: left; padding: 0.75rem 1rem; background: #1e293b;
+      border-bottom: 1px solid #334155; color: #94a3b8; font-weight: 600;
+    }
+    .table td { padding: 0.75rem 1rem; border-bottom: 1px solid #1e293b; color: #e2e8f0; }
+    .table tr:hover td { background: #1e293b; }
+
+    .badge {
+      display: inline-flex; align-items: center; padding: 0.2rem 0.6rem;
+      border-radius: 9999px; font-size: 0.75rem; font-weight: 600;
+    }
+    .badge-primary { background: #1e3a5f; color: #93c5fd; }
+    .badge-success { background: #064e3b; color: #6ee7b7; }
+    .badge-error   { background: #450a0a; color: #fca5a5; }
+
+    .alert {
+      padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.875rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .alert-warning { background: #78350f33; border: 1px solid #d97706; color: #fbbf24; }
+    .alert-error   { background: #450a0a33; border: 1px solid #ef4444; color: #fca5a5; }
+    .alert-success { background: #064e3b33; border: 1px solid #10b981; color: #6ee7b7; }
+
+    /* ── Counter widget ───────────────────────────────────────────────────────── */
+    .counter-widget {
+      background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+      padding: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      max-width: 280px;
+    }
+    .counter-display {
+      font-size: 3rem; font-weight: 800; color: #6ee7b7;
+      font-variant-numeric: tabular-nums; min-width: 120px; text-align: center;
+    }
+    .counter-controls { display: flex; gap: 0.5rem; align-items: center; }
+    .step-control { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #94a3b8; }
+
+    /* ── Dashboard ────────────────────────────────────────────────────────────── */
+    .dashboard { max-width: 800px; }
+    .dashboard-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #334155;
+    }
+    .dashboard h1 { font-size: 1.75rem; font-weight: 700; color: #f1f5f9; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+      padding: 1.25rem; display: flex; flex-direction: column; gap: 0.25rem;
+    }
+    .stat-label { font-size: 0.8125rem; color: #64748b; }
+    .stat-value { font-size: 2rem; font-weight: 800; color: #6ee7b7; }
+    .widgets { display: flex; flex-wrap: wrap; gap: 1rem; }
+
+    /* ── User management ──────────────────────────────────────────────────────── */
+    .user-management { max-width: 900px; }
+    .page-header { margin-bottom: 1.5rem; }
+    .search-bar { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .search-bar .input { flex: 1; }
+    .pagination { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 1.5rem; justify-content: center; }
+
+    /* ── Modal overlay ────────────────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: #000a; display: flex;
+      align-items: center; justify-content: center; z-index: 100;
+    }
+    .modal-box {
+      background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+      padding: 1.5rem; width: 100%; max-width: 420px;
+    }
+    .modal-title { font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.375rem; margin-bottom: 1rem; }
+    .form-label { font-size: 0.8125rem; color: #94a3b8; }
+    .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1.25rem; }
+
+    /* ── p utility classes for tailwind-less mode ─────────────────────────────── */
+    .p-6   { padding: 1.5rem; }
+    .mb-4  { margin-bottom: 1rem; }
+    .mb-6  { margin-bottom: 1.5rem; }
+    .mt-6  { margin-top: 1.5rem; }
+    .flex  { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .justify-center  { justify-content: center; }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .text-center { text-align: center; }
+    .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+    .text-gray-400 { color: #9ca3af; }
+    .text-2xl  { font-size: 1.5rem; }
+    .font-bold { font-weight: 700; }
+    .w-full { width: 100%; }
+    .flex-1 { flex: 1; }
+    .text-red-500    { color: #ef4444; }
+    .text-yellow-500 { color: #eab308; }
+    .text-sm { font-size: 0.875rem; }
+    .text-green-400  { color: #4ade80; }
+  </style>
+</head>
+<body>
+
+<!--
+  ═══════════════════════════════════════════════════════
+  ROOT MOUNT POINT
+  The Vue application is mounted here.
+  ═══════════════════════════════════════════════════════
+-->
+<div id="app"></div>
+
+<!-- ─────────────────────────────────────────────────────────────────────────
+     Main application bootstrap (ES Module)
+     ───────────────────────────────────────────────────────────────────────── -->
+<script type="module">
+import { createApp, ref, computed, defineComponent, h } from 'vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import { initSocket, connectionStatus } from '/javalive/runtime.js';
+
+// ── Lazy-load generated page components ──────────────────────────────────────
+// These are generated by the JavaLive annotation processor at compile time.
+
+const DashboardPage     = () => import('/javalive/components/dashboard.js');
+const UserManagementPage = () => import('/javalive/components/user-management.js');
+const CounterWidgetComp = () => import('/javalive/components/counter-widget.js');
+
+// ── Vue Router ────────────────────────────────────────────────────────────────
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/',
+      redirect: '/dashboard',
+    },
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: DashboardPage,
+      meta: { title: 'Dashboard — JavaLive' },
+    },
+    {
+      path: '/users',
+      name: 'UserManagement',
+      component: UserManagementPage,
+      meta: { title: 'User Management — JavaLive' },
+    },
+    // Catch-all 404
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: defineComponent({
+        template: `
+          <div class="jl-connecting">
+            <div style="font-size:4rem">🔍</div>
+            <h2 style="font-size:1.5rem;font-weight:700">Page Not Found</h2>
+            <p style="color:#64748b">No route matches <code style="color:#6ee7b7">{{ $route.path }}</code></p>
+            <a href="/dashboard" class="btn btn-primary" style="margin-top:1rem">Go to Dashboard</a>
+          </div>
+        `,
+      }),
+    },
+  ],
+
+  scrollBehavior(to, from, saved) {
+    return saved || { top: 0 };
+  },
+});
+
+// Update document title on navigation
+router.afterEach((to) => {
+  if (to.meta?.title) document.title = to.meta.title;
+});
+
+// ── Root App Component ────────────────────────────────────────────────────────
+const App = defineComponent({
+  name: 'JavaLiveApp',
+
+  setup() {
+    const wsStatus = connectionStatus;
+
+    const statusClass = computed(() => ({
+      'jl-status-dot': true,
+      'connected': wsStatus.value === 'connected',
+    }));
+
+    const statusLabel = computed(() => {
+      switch (wsStatus.value) {
+        case 'connected':    return '🟢 Connected';
+        case 'connecting':   return '🔄 Connecting…';
+        case 'reconnecting': return '🔄 Reconnecting…';
+        case 'error':        return '🔴 Error';
+        default:             return '⚪ Disconnected';
+      }
+    });
+
+    return { wsStatus, statusClass, statusLabel };
+  },
+
+  template: `
+    <div class="jl-app">
+      <!-- Navigation bar -->
+      <nav class="jl-nav">
+        <a href="/" class="jl-nav-brand">☕ JavaLive</a>
+        <div class="jl-nav-links">
+          <router-link to="/dashboard" class="jl-nav-link">📊 Dashboard</router-link>
+          <router-link to="/users"     class="jl-nav-link">👥 Users</router-link>
+          <a href="/javalive/status"   class="jl-nav-link" target="_blank">🔌 Status</a>
+          <a href="/"                  class="jl-nav-link" style="color:#4ade80;font-size:0.75rem">v0.1-alpha</a>
+          <div style="display:flex;align-items:center;gap:6px;margin-left:0.5rem;font-size:0.75rem;color:#64748b">
+            <div :class="statusClass"></div>
+            {{ statusLabel }}
+          </div>
+        </div>
+      </nav>
+
+      <!-- Page content -->
+      <main id="app-view">
+        <router-view />
+      </main>
+    </div>
+  `,
+});
+
+// ── Bootstrap ─────────────────────────────────────────────────────────────────
+const app = createApp(App);
+app.use(router);
+app.mount('#app');
+
+// Initiate WebSocket connection (non-blocking — components will also call it)
+initSocket('/javalive-ws').catch(err => {
+  console.warn('[JavaLive] Initial WebSocket connection failed:', err);
+});
+</script>
+
+</body>
+</html>
