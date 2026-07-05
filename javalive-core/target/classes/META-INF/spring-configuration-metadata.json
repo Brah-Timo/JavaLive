@@ -1,0 +1,161 @@
+{
+  "groups": [
+    {
+      "name": "javalive",
+      "type": "io.javalive.core.config.JavaLiveProperties",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties"
+    },
+    {
+      "name": "javalive.dev",
+      "type": "io.javalive.core.config.JavaLiveProperties$DevProperties",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties",
+      "sourceMethod": "getDev()"
+    },
+    {
+      "name": "javalive.session",
+      "type": "io.javalive.core.config.JavaLiveProperties$SessionProperties",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties",
+      "sourceMethod": "getSession()"
+    },
+    {
+      "name": "javalive.ssr",
+      "type": "io.javalive.core.config.JavaLiveProperties$SsrProperties",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties",
+      "sourceMethod": "getSsr()"
+    },
+    {
+      "name": "javalive.state",
+      "type": "io.javalive.core.config.JavaLiveProperties$StateProperties",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties",
+      "sourceMethod": "getState()"
+    },
+    {
+      "name": "javalive.websocket",
+      "type": "io.javalive.core.config.JavaLiveProperties$WebSocketProperties",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties",
+      "sourceMethod": "getWebsocket()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "javalive.debug",
+      "type": "java.lang.Boolean",
+      "description": "Enable debug logging for JavaLive internals.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "javalive.dev.hot-reload",
+      "type": "java.lang.Boolean",
+      "description": "Enable hot-reload in development.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$DevProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "javalive.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether JavaLive is enabled. Set to false to disable all processing.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "javalive.session.max-per-user",
+      "type": "java.lang.Integer",
+      "description": "Maximum concurrent sessions per user.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$SessionProperties",
+      "defaultValue": 10
+    },
+    {
+      "name": "javalive.session.timeout-minutes",
+      "type": "java.lang.Integer",
+      "description": "Session idle timeout in minutes before cleanup.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$SessionProperties",
+      "defaultValue": 30
+    },
+    {
+      "name": "javalive.ssr.cache-size",
+      "type": "java.lang.Integer",
+      "description": "Number of SSR results to cache.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$SsrProperties",
+      "defaultValue": 100
+    },
+    {
+      "name": "javalive.ssr.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable server-side rendering for first page load.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$SsrProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "javalive.state.max-size-kb",
+      "type": "java.lang.Integer",
+      "description": "Maximum state size per component per session (KB).",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$StateProperties",
+      "defaultValue": 1024
+    },
+    {
+      "name": "javalive.websocket.allowed-origins",
+      "type": "java.lang.String",
+      "description": "Allowed CORS origins.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$WebSocketProperties",
+      "defaultValue": "*"
+    },
+    {
+      "name": "javalive.websocket.compression",
+      "type": "java.lang.Boolean",
+      "description": "Enable per-message compression.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$WebSocketProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "javalive.websocket.endpoint",
+      "type": "java.lang.String",
+      "description": "WebSocket endpoint path.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$WebSocketProperties",
+      "defaultValue": "\/javalive-ws"
+    },
+    {
+      "name": "javalive.websocket.heartbeat-incoming",
+      "type": "java.lang.Integer",
+      "description": "Heartbeat interval (incoming) in ms.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$WebSocketProperties",
+      "defaultValue": 4000
+    },
+    {
+      "name": "javalive.websocket.heartbeat-outgoing",
+      "type": "java.lang.Integer",
+      "description": "Heartbeat interval (outgoing) in ms.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$WebSocketProperties",
+      "defaultValue": 4000
+    },
+    {
+      "name": "javalive.websocket.message-size-limit",
+      "type": "java.lang.Integer",
+      "description": "Maximum message size in bytes.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$WebSocketProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "javalive.websocket.reconnect-delay",
+      "type": "java.lang.Integer",
+      "description": "Reconnect delay in ms.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$WebSocketProperties",
+      "defaultValue": 2000
+    },
+    {
+      "name": "javalive.websocket.send-buffer-size-limit",
+      "type": "java.lang.Integer",
+      "description": "Send buffer size in bytes.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$WebSocketProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "javalive.websocket.send-time-limit",
+      "type": "java.lang.Integer",
+      "description": "Send timeout in milliseconds.",
+      "sourceType": "io.javalive.core.config.JavaLiveProperties$WebSocketProperties",
+      "defaultValue": 20000
+    }
+  ],
+  "hints": []
+}

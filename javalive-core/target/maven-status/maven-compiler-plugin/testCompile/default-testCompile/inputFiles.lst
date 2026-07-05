@@ -1,0 +1,9 @@
+/home/user/webapp/javalive/javalive-core/src/test/java/io/javalive/core/dispatch/SecurityGuardTest.java
+/home/user/webapp/javalive/javalive-core/src/test/java/io/javalive/core/rendering/HydrationDataTest.java
+/home/user/webapp/javalive/javalive-core/src/test/java/io/javalive/core/routing/PageRegistryTest.java
+/home/user/webapp/javalive/javalive-core/src/test/java/io/javalive/core/session/LiveSessionManagerTest.java
+/home/user/webapp/javalive/javalive-core/src/test/java/io/javalive/core/session/LiveSessionTest.java
+/home/user/webapp/javalive/javalive-core/src/test/java/io/javalive/core/state/StateDiffTest.java
+/home/user/webapp/javalive/javalive-core/src/test/java/io/javalive/core/state/StateManagerTest.java
+/home/user/webapp/javalive/javalive-core/src/test/java/io/javalive/core/state/StateSchemaTest.java
+/home/user/webapp/javalive/javalive-core/src/test/java/io/javalive/core/websocket/ServerMessageTest.java
